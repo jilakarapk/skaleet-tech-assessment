@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 
+import type { HomeScreenProps } from '../App';
+
 import { useTransactions } from './TransactionContext';
 
-const HomeScreen = ({ navigation }) => {
+import type { Transaction } from './types';
+
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { transactions, balance } = useTransactions();
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Transaction }) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>Transaction ID: {item.id}</Text>
       <Text style={styles.itemText}>Amount: ${item.amount.toFixed(2)}</Text>
@@ -22,11 +26,15 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.balanceText}>
-        Current Balance: ${balance.toFixed(2)}
+        Current Balance: ${balance?.toFixed(2)}
       </Text>
       <Button
         title='Add Transaction'
         onPress={() => navigation.navigate('Transaction')}
+      />
+      <Button
+        title='Add Beneficiary'
+        onPress={() => navigation.navigate('Beneficiary')}
       />
       <FlatList
         data={transactions}
